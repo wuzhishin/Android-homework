@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,8 +27,13 @@ public class MainActivity extends AppCompatActivity {
         Button medium_btn = findViewById(R.id.medium_btn);
         Button easy_btn = findViewById(R.id.easy_btn);
         Button hard_btn = findViewById(R.id.hard_btn);
+        TextView text = findViewById(R.id.playerinfo);
 
         getScreenHW();
+
+        Bundle bundle = getIntent().getExtras();
+        text.setText(String.format("玩家: %s",bundle.getString("name")));
+
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
         medium_btn.setOnClickListener(view -> {
             gameType=1;
