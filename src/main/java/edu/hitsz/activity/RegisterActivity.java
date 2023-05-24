@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setTitle("注册用户");
 
         etName = findViewById(R.id.et_re_name);
         etPwd = findViewById(R.id.et_re_pwd);
@@ -51,45 +52,58 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         final View lv = v;
         final Map<String, String> paramsmap = new HashMap<>();
-        paramsmap.put("username", etName.getText().toString());
-        paramsmap.put("password", etPwd.getText().toString());
 
-        new Thread() {
-            @Override
-            public void run() {
-                String loginresult = "";
-                try {
-                    loginresult = LoginByPost(LOGIN_URL, paramsmap);
-                } catch (
-                        Exception e) {
-                    e.printStackTrace();
-                    threadRunToToast("登录时程序发生异常");
+        //判断两次密码输入是否相同
+        String password0 = etPwd.getText().toString();
+        String password1 = etPwd1.getText().toString();
+        if(!password0.equals(password1)){
+            threadRunToToast("两次输入密码不相同");
+        }
+        else{
+            paramsmap.put("username", etName.getText().toString());
+            paramsmap.put("password", etPwd.getText().toString());
+
+            new Thread() {
+                @Override
+                public void run() {
+                    String loginresult = "";
+                    try {
+                        loginresult = LoginByPost(LOGIN_URL, paramsmap);
+                    } catch (
+                            Exception e) {
+                        e.printStackTrace();
+                        threadRunToToast("登录时程序发生异常");
+                    }
+
+                    ///返回消息
+                    Message msg = new Message();
+                    msg.what = 0x11;
+                    msg.obj = loginresult;
+                    handler.sendMessage(msg);
                 }
 
-                ///返回消息
-                Message msg = new Message();
-                msg.what = 0x11;
-                msg.obj = loginresult;
-                handler.sendMessage(msg);
-            }
+                ;
+                Handler handler = new Handler(getMainLooper()) {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if (msg.what == 0x11) {
+                            if ("success".equals(msg.obj.toString())) {
+                                threadRunToToast("注册成功");
+                                //跳转回登录页面
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                Bundle bundle = new Bundle();
+                                startActivity(intent);
 
-            ;
-            Handler handler = new Handler(getMainLooper()) {
-                @Override
-                public void handleMessage(Message msg) {
-                    if (msg.what == 0x11) {
-                        if ("success".equals(msg.obj.toString())) {
-
-
-
-                        } else if ("failed".equals(msg.obj.toString())) {
-                            threadRunToToast("用户名或密码错误！");
+                            } else if ("failed".equals(msg.obj.toString())) {
+                                threadRunToToast("该用户名已被注册");
+                            }
                         }
                     }
-                }
 
-            };
-        }.start();
+                };
+            }.start();
+        }
+
     }
 
     /**

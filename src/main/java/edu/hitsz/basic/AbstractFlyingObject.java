@@ -204,6 +204,9 @@ public abstract class AbstractFlyingObject {
     public void vanish() {
         isValid = false;
     }
+    public void reboot(){
+        isValid = true;
+    }
 
     public void update() {
         vanish();

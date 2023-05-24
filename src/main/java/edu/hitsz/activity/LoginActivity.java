@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     switch (lv.getId()) {
                         case R.id.register:
-                            // TODO 跳转至注册页面
+                            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                            startActivity(intent);
                             break;
                         case R.id.login:
                             loginresult = LoginByGet(LOGIN_URL, paramsmap);
