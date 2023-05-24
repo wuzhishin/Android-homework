@@ -18,6 +18,7 @@
             android:exported="false" />
         <activity android:name="edu.hitsz.activity.SQLiteWriteActivity" />
         <activity android:name="edu.hitsz.activity.RankActivity" />
+        <activity android:name=".activity.RegisterActivity"/>
         <service android:name=".music.MusicService"
             android:enabled="true"
             android:exported="true"/>
@@ -36,7 +37,8 @@
         <activity
 
             android:name="edu.hitsz.activity.MainActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:launchMode="singleTask">
 
         </activity>
     </application>

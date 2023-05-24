@@ -48,6 +48,7 @@ public class HeroAircraft extends AbstractAircraft {
             }
         }
         else{
+            heroAircraft.reboot();
             heroAircraft.decreaseHp(-1* heroAircraft.getMax_hp());
         }
 

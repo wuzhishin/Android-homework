@@ -111,6 +111,7 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
         mSurfaceHolder.addCallback(this);
         this.setFocusable(true);
         ImageManager.initImage(context);
+        score = 0;
 
         // 初始化英雄机
         heroAircraft = HeroAircraft.getInstance();
