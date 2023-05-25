@@ -10,8 +10,8 @@ import edu.hitsz.aircraft.MobFactory;
 
 public class EasyGame extends BaseGame{
 
-    public EasyGame(Context context, Handler handler0, Handler handler1) {
-        super(context,handler0,handler1);
+    public EasyGame(Context context, Handler handler0, Handler handler1, boolean isMuti, String name) {
+        super(context,handler0,handler1,isMuti,name);
         this.backGround = ImageManager.BACKGROUND1_IMAGE;
     }
 

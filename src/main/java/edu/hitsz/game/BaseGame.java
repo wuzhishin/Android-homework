@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -32,6 +33,7 @@ import edu.hitsz.prop.BaseProp;
 import edu.hitsz.prop.BloodProp;
 import edu.hitsz.prop.BombProp;
 import edu.hitsz.prop.BulletProp;
+import edu.hitsz.socketclient.ClientThread;
 
 /**
  * 游戏逻辑抽象基类，遵循模板模式，action() 为模板方法
@@ -48,6 +50,10 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
     private Paint mPaint;
     protected Handler handler0;
     protected Handler handler1;
+    protected Handler handler;
+    protected ClientThread clientThread;
+
+
 
     //点击屏幕位置
     float clickX = 0, clickY=0;
@@ -83,6 +89,8 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
     private boolean gameOverFlag = false;
     protected static int score = 0;
     private int time = 0;
+    protected String name;
+    protected boolean isMuti;
 
     protected AircraftFactory aircraftFactory;
 
@@ -98,10 +106,16 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
     private int cycleDuration = 600;
     private int cycleTime = 0;
 
+    //联机对手数据
+    protected String rivalScore;
+    protected String rivalLife;
+    protected String rivalName;
+    protected String rivalFlag = "false";
 
 
 
-    public BaseGame(Context context, Handler handler0, Handler handler1){
+
+    public BaseGame(Context context, Handler handler0, Handler handler1, boolean isMuti, String name){
         super(context);
         this.handler0 = handler0;
         this.handler1 = handler1;
@@ -111,6 +125,11 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
         mSurfaceHolder.addCallback(this);
         this.setFocusable(true);
         ImageManager.initImage(context);
+        score = 0;
+        this.name = name;
+        this.isMuti = isMuti;
+
+        connectServer(isMuti);
 
         // 初始化英雄机
         heroAircraft = HeroAircraft.getInstance();
@@ -166,6 +185,8 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                //mutiCommunicate(isMuti);
             //}
         };
 
@@ -431,6 +452,18 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
         canvas.drawText("SCORE:" + this.score, x, y, mPaint);
         y = y + 60;
         canvas.drawText("LIFE:" + this.heroAircraft.getHp(), x, y, mPaint);
+        y = y + 60;
+        canvas.drawText("NAME:" + this.name, x, y ,mPaint);
+
+        if(isMuti){
+            x = 500;
+            y = 40;
+            canvas.drawText("SCORE:" + this.rivalScore, x, y, mPaint);
+            y = y + 60;
+            canvas.drawText("LIFE:" + this.rivalLife, x, y, mPaint);
+            y = y + 60;
+            canvas.drawText("NAME:" + this.rivalName, x, y ,mPaint);
+        }
     }
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
@@ -452,20 +485,69 @@ public abstract class BaseGame extends SurfaceView implements SurfaceHolder.Call
     @Override
     public void run() {
 
-        while (mbLoop){   //游戏结束停止绘制
+        while (mbLoop || (rivalFlag.equals("false") && isMuti)){   //游戏结束停止绘制
             synchronized (mSurfaceHolder){
-                action();
-                draw();
+                if(mbLoop){
+                    action();
+                    draw();
+                }
+                mutiCommunicate(isMuti);
             }
         }
         Message message1 = Message.obtain();
         message1.what = 1 ;
-
+        if(isMuti){
+            message1.obj = String.format("%s;%s",rivalName,rivalScore);
+            Message msg = new Message();
+            msg.obj = "bye";
+            clientThread.toserverHandler.sendMessage(msg);
+        }
         handler0.sendMessage(message1);
     }
 
     public static int getScore(){
         return score;
+    }
+
+    public void connectServer(boolean isMuti){
+        if(isMuti){
+            //用于发送接收到的服务端的消息，显示在界面上
+            handler = new Handler(Looper.getMainLooper()) {
+                @Override
+                public void handleMessage(Message msg) {
+                    //如果消息来自于子线程
+                    if (msg.what == 0x123) {
+                        String[] data = new String[3];
+                        data = msg.obj.toString().trim().split(";");
+                        if(data.length == 4){
+                            if(!data[2].equals(name)){
+                                rivalScore = data[0];
+                                rivalName = data[2];
+                                rivalLife = data[1];
+                                rivalFlag = data[3];
+                            }
+                        }
+                        else{
+                            rivalScore = "连接中";
+                            rivalName = "连接中";
+                            rivalLife = "连接中";
+                        }
+                    }
+                }
+            };
+            clientThread = new ClientThread(handler);  //
+            new Thread(clientThread).start();
+        }
+    }
+
+    public void mutiCommunicate(boolean isMuti){
+        if(isMuti){
+            Message msg = new Message();
+            msg.obj = String.format("%s;%s;%s;%s",Integer.toString(score),Integer.toString(heroAircraft.getHp()),name,gameOverFlag);
+            if(clientThread != null) {
+                clientThread.toserverHandler.sendMessage(msg);
+            }
+        }
     }
 
 }

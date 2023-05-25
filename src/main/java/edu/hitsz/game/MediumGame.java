@@ -16,8 +16,8 @@ public class MediumGame extends BaseGame{
 
     private int enemyMaxNumber = 10;
 
-    public MediumGame(Context context, Handler handler0, Handler handler1) {
-        super(context,handler0,handler1);
+    public MediumGame(Context context, Handler handler0, Handler handler1, boolean isMuti,String name) {
+        super(context,handler0,handler1,isMuti,name);
         this.backGround = ImageManager.BACKGROUND3_IMAGE;
     }
 
