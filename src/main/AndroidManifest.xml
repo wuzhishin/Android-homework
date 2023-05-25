@@ -19,6 +19,9 @@
         <activity android:name="edu.hitsz.activity.SQLiteWriteActivity" />
         <activity android:name="edu.hitsz.activity.RankActivity" />
         <activity android:name=".activity.RegisterActivity"/>
+        <activity android:name=".activity.ModeActivity"
+          android:launchMode="singleTask"/>
+        <activity android:name=".activity.ConRankActivity"/>
         <service android:name=".music.MusicService"
             android:enabled="true"
             android:exported="true"/>

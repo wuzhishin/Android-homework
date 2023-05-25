@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.hitsz.R;
+import edu.hitsz.socketclient.ClientThread;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,18 +39,21 @@ public class MainActivity extends AppCompatActivity {
         medium_btn.setOnClickListener(view -> {
             gameType=1;
             intent.putExtra("gameType",gameType);
+            intent.putExtras(bundle);
             startActivity(intent);
         });
 
         easy_btn.setOnClickListener(view -> {
             gameType =2;
             intent.putExtra("gameType",gameType);
+            intent.putExtras(bundle);
             startActivity(intent);
         });
 
         hard_btn.setOnClickListener(view -> {
             gameType =3;
             intent.putExtra("gameType",gameType);
+            intent.putExtras(bundle);
             startActivity(intent);
         });
 
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "screenWidth : " + screenWidth + " screenHeight : " + screenHeight);
     }
+
 
     @Override
     public void onBackPressed() {

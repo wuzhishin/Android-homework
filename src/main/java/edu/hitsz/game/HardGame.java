@@ -25,8 +25,8 @@ public class HardGame extends BaseGame{
     }
 
 
-    public HardGame(Context context, Handler handler0, Handler handler1) {
-        super(context,handler0,handler1);
+    public HardGame(Context context, Handler handler0, Handler handler1,boolean isMuti,String name) {
+        super(context,handler0,handler1,isMuti,name);
         this.backGround = ImageManager.BACKGROUND2_IMAGE;
     }
 

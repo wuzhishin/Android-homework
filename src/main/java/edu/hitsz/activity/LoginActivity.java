@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if ("success".equals(msg.obj.toString())) {
                             threadRunToToast("登录成功！");
                                 Intent intent=new Intent();
-                                intent.setClass(LoginActivity.this,MainActivity.class);
+                                intent.setClass(LoginActivity.this,ModeActivity.class);
 
                                 Bundle bundle = new Bundle();
                                 bundle.putString("name",etName.getText().toString());

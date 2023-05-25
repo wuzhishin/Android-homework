@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="22sp"
+            android:text="排名"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="22sp"
+            android:text="姓名"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="22sp"
+            android:text="分数"/>
+
+
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3">
+        <TextView android:id="@+id/u1_rank"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="1"/>
+        <TextView android:id="@+id/u1_name"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="text"/>
+        <TextView android:id="@+id/u1_score"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="text"/>
+
+        <TextView android:id="@+id/u2_rank"
+            android:layout_width="0dp"
+            android:layout_columnWeight="2"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="2"/>
+        <TextView android:id="@+id/u2_name"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="text"/>
+        <TextView android:id="@+id/u2_score"
+            android:layout_width="0dp"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="text"/>
+
+    </GridLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/back_diff"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="返回难度选择"/>
+        <Button
+            android:id="@+id/back_mode"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="返回模式选择"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
